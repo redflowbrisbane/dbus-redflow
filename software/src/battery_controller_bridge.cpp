@@ -51,6 +51,7 @@ BatteryControllerBridge::BatteryControllerBridge(BatteryController *BatteryContr
 		deviceInstance = getDeviceInstance(portName, "/dev/ttyO", 256);
 	produce("/Mgmt/Connection", portName);
 	produce("/DeviceInstance", deviceInstance);
+	produce("/Capabilities", "Redflow,IntegratedSoc");
 	QString serial = BatteryController->serial();
 	produce("/Serial", serial);
 
