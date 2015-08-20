@@ -76,10 +76,10 @@ bool BatteryControllerBridge::toDBus(const QString &path, QVariant &value)
 
 void BatteryControllerBridge::produceBatteryInfo(BatteryController *bc, const QString &path)
 {
-	produce(bc, "BattAmps", path + "/Dc/0/I", "A", 1);
-	produce(bc, "BattVolts", path + "/Dc/0/V", "V", 0);
-	produce(bc, "BattPower", path + "/Dc/0/P", "W", 0);
-	produce(bc, "BattTemp", path + "/Dc/0/T", "C", 1);
+	produce(bc, "BattAmps", path + "/Dc/0/Current", "A", 1);
+	produce(bc, "BattVolts", path + "/Dc/0/Voltage", "V", 0);
+	produce(bc, "BattPower", path + "/Dc/0/Power", "W", 0);
+	produce(bc, "BattTemp", path + "/Dc/0/Temperature", "C", 1);
 	produce(bc, "SOC", path + "/Soc", "%", 1);
 
 	produce(bc, "StsRegSummary", path + "/StsRegSummary", "", 0);
