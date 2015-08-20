@@ -34,21 +34,22 @@ class BatteryController : public QObject
 
 signals:
 	void battAmpsChanged();
-
 	void battVoltsChanged();
-
 	void battTempChanged();
-
 	void bussAmpsChanged();
-
 	void bussVoltsChanged();
-
 	void airTempChanged();
-
 	void socChanged();
-
 	void battPowerChanged();
-	
+
+	void stsRegSummaryChanged();
+	void stsRegHardwareFailureChanged();
+	void stsRegOperationalFailureChanged();
+	void stsRegWarningChanged();
+	void stsRegOperationalModeChanged();
+	void socAmpHrsChanged();
+	void healthIndicationChanged();
+	void stateChanged();
 public:
 	BatteryController(const QString &portName, int slaveAddress, QObject *parent = 0);
 

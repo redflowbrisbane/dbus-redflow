@@ -377,7 +377,9 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				mBatteryController->setBattAmps(stemp.toInt());
 				break;
 			case BussAmps:
+				stemp = QString::number((short) registers[ra.regOffset],10);
 				QLOG_INFO() << "BussAmps: " << registers[ra.regOffset];
+				mBatteryController->setBussAmps(stemp.toInt());
 				break;
 			case BattTemp:
 				QLOG_INFO() << "BattTemp: " << registers[ra.regOffset];
@@ -392,27 +394,35 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				mBatteryController->setSOC(registers[ra.regOffset]);
 				break;	
 			case StsRegSummary:
+				QLOG_INFO() << "StsRegSummary: " << registers[ra.regOffset];
 				mBatteryController->setStsRegSummary(registers[ra.regOffset]);
 				break;	
 			case StsRegHardwareFailure:
+				QLOG_INFO() << "StsRegHardwareFailure: " << registers[ra.regOffset];
 				mBatteryController->setStsRegHardwareFailure(registers[ra.regOffset]);
 				break;
 			case StsRegOperationalFailure:
+				QLOG_INFO() << "StsRegOperationalFailure: " << registers[ra.regOffset];
 				mBatteryController->setStsRegOperationalFailure(registers[ra.regOffset]);
 				break;	
 			case StsRegWarning:
+				QLOG_INFO() << "StsRegWarning: " << registers[ra.regOffset];
 				mBatteryController->setStsRegWarning(registers[ra.regOffset]);
 				break;	
 			case StsRegOperationalMode:
+				QLOG_INFO() << "StsRegOperationalMode: " << registers[ra.regOffset];
 				mBatteryController->setStsRegOperationalMode(registers[ra.regOffset]);
 				break;
 			case SOC_AmpHrs:
+				QLOG_INFO() << "SOC_AmpHrs: " << registers[ra.regOffset];
 				mBatteryController->setSOCAmpHrs(registers[ra.regOffset]);
 				break;			
 			case HealthIndication:
+				QLOG_INFO() << "HealthIndication: " << registers[ra.regOffset];
 				mBatteryController->setHealthIndication(registers[ra.regOffset]);
 				break;	
 			case ZBMState:
+				QLOG_INFO() << "ZBMState: " << registers[ra.regOffset];
 				mBatteryController->setState(registers[ra.regOffset]);
 				break;
 			default:

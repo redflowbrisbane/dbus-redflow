@@ -131,7 +131,7 @@ void BatteryController::setBussVolts(int t)
 	if (mBussVolts == t)
 		return;
 	mBussVolts = t;
-	emit battVoltsChanged();	// since every emit invokes the same publish routine
+	emit bussVoltsChanged();
 }
 
 double BatteryController::BattAmps() const
@@ -158,7 +158,7 @@ void BatteryController::setBussAmps(int t)
 	if (mBussAmps == t)
 		return;
 	mBussAmps = t;
-	//this function is never called since we are not reading BussAmps from the battery controller
+	emit bussAmpsChanged();
 }
 
 double BatteryController::BattTemp() const
@@ -223,7 +223,7 @@ void BatteryController::setStsRegSummary(int t)
 	if (mStsRegSummary == t)
 		return;
 	mStsRegSummary = t;
-	emit socChanged();	 
+	emit stsRegSummaryChanged();	 
 }
 
 
@@ -237,7 +237,7 @@ void BatteryController::setStsRegHardwareFailure(int t)
 	if (mStsRegHardwareFailure == t)
 		return;
 	mStsRegHardwareFailure = t;
-	emit socChanged();	 
+	emit stsRegHardwareFailureChanged();	 
 }
 
 
@@ -251,7 +251,7 @@ void BatteryController::setStsRegOperationalFailure(int t)
 	if (mStsRegOperationalFailure == t)
 		return;
 	mStsRegOperationalFailure = t;
-	emit socChanged();	 
+	emit stsRegOperationalFailureChanged();	 
 }
 
 
@@ -265,7 +265,7 @@ void BatteryController::setStsRegWarning(int t)
 	if (mStsRegWarning == t)
 		return;
 	mStsRegWarning = t;
-	emit socChanged();	 
+	emit stsRegWarningChanged();	 
 }
 
 
@@ -279,7 +279,7 @@ void BatteryController::setStsRegOperationalMode(int t)
 	if (mStsRegOperationalMode == t)
 		return;
 	mStsRegOperationalMode = t;
-	emit socChanged();	 
+	emit stsRegOperationalModeChanged();	 
 }
 
 
@@ -293,7 +293,7 @@ void BatteryController::setSOCAmpHrs(int t)
 	if (mSOCAmpHrs == t)
 		return;
 	mSOCAmpHrs = t;
-	emit socChanged();	 
+	emit socAmpHrsChanged();	 
 }
 
 
@@ -307,7 +307,7 @@ void BatteryController::setHealthIndication(int t)
 	if (mHealthIndication == t)
 		return;
 	mHealthIndication = t;
-	emit socChanged();	 
+	emit healthIndicationChanged();	 
 }
 
 
@@ -321,6 +321,6 @@ void BatteryController::setState(int t)
 	if (mState == t)
 		return;
 	mState = t;
-	emit socChanged();	 
+	emit stateChanged();	 
 }
 
