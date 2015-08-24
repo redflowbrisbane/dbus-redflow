@@ -19,6 +19,7 @@ class BatteryController : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(double BattAmps READ BattAmps WRITE setBattAmps NOTIFY battAmpsChanged)
+	Q_PROPERTY(double BussAmps READ BussAmps WRITE setBussAmps NOTIFY bussAmpsChanged)
 	Q_PROPERTY(int BattVolts READ BattVolts WRITE setBattVolts NOTIFY battVoltsChanged)
 	Q_PROPERTY(double BattTemp READ BattTemp WRITE setBattTemp NOTIFY battTempChanged)
 	Q_PROPERTY(int BattPower READ BattPower WRITE setBattPower NOTIFY battPowerChanged)
