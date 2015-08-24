@@ -383,11 +383,11 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				break;
 			case BattTemp:
 				QLOG_INFO() << "BattTemp: " << registers[ra.regOffset];
-				mBatteryController->setBattTemp(registers[ra.regOffset]);
+				mBatteryController->setBattTemp(static_cast<qint16>(registers[ra.regOffset]));
 				break;
 			case AirTemp:
 				QLOG_INFO() << "AirTemp: " << registers[ra.regOffset];
-				mBatteryController->setAirTemp(registers[ra.regOffset]);
+				mBatteryController->setAirTemp(static_cast<qint16>(registers[ra.regOffset]));
 				break;
 			case SOC:
 				QLOG_INFO() << "SOC: " << registers[ra.regOffset];
@@ -415,7 +415,7 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				break;
 			case SOC_AmpHrs:
 				QLOG_INFO() << "SOC_AmpHrs: " << registers[ra.regOffset];
-				mBatteryController->setSOCAmpHrs(registers[ra.regOffset]);
+				mBatteryController->setSOCAmpHrs(static_cast<qint16>(registers[ra.regOffset]));
 				break;			
 			case HealthIndication:
 				QLOG_INFO() << "HealthIndication: " << registers[ra.regOffset];
