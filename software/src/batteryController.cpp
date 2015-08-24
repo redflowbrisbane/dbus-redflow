@@ -324,3 +324,71 @@ void BatteryController::setState(int t)
 	emit stateChanged();	 
 }
 
+
+int BatteryController::DeviceAddress() const
+{
+	return mDeviceAddress;
+}
+
+void BatteryController::setDeviceAddress(int t)
+{
+	if (mDeviceAddress == t)
+		return;
+	mDeviceAddress = t;
+	emit deviceAddressChanged();	 
+}
+
+int BatteryController::ClearStatusRegisterFlags() const
+{
+	return mClearStatusRegisterFlags;
+}
+
+void BatteryController::setClearStatusRegisterFlags(int t)
+{
+	if (mClearStatusRegisterFlags == t)
+		return;
+	mClearStatusRegisterFlags = t;
+	emit clearStatusRegisterFlagsChanged();	 
+}
+
+int BatteryController::RequestDelayedSelfMaintenance() const
+{
+	return mRequestDelayedSelfMaintenance;
+}
+
+void BatteryController::setRequestDelayedSelfMaintenance(int t)
+{
+QLOG_INFO() << "DELAYED STRIP";
+	if (mRequestDelayedSelfMaintenance == t)
+		return;
+	mRequestDelayedSelfMaintenance = t;
+	emit requestDelayedSelfMaintenanceChanged();	 
+}
+
+int BatteryController::SetOperationalMode() const
+{
+	return mSetOperationalMode;
+}
+
+void BatteryController::setSetOperationalMode(int t)
+{
+QLOG_INFO() << "SETSET";
+	if (mSetOperationalMode == t)
+		return;
+	mSetOperationalMode = t;
+	emit setOperationalModeChanged();	 
+}
+
+int BatteryController::RequestImmediateSelfMaintenance() const
+{
+	return mRequestImmediateSelfMaintenance;
+}
+
+void BatteryController::setRequestImmediateSelfMaintenance(int t)
+{
+QLOG_INFO() << "IMMEDIATE STRIP";
+	if (mRequestImmediateSelfMaintenance == t)
+		return;
+	mRequestImmediateSelfMaintenance = t;
+	emit requestImmediateSelfMaintenanceChanged();	 
+}

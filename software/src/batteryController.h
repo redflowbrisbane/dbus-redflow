@@ -31,6 +31,21 @@ class BatteryController : public QObject
 	Q_PROPERTY(int firmwareVersion READ firmwareVersion WRITE setFirmwareVersion NOTIFY firmwareVersionChanged)
 	Q_PROPERTY(int errorCode READ errorCode WRITE setErrorCode NOTIFY errorCodeChanged)
 	Q_PROPERTY(QString portName READ portName)
+	Q_PROPERTY(double StsRegOperationalMode READ StsRegOperationalMode WRITE setStsRegOperationalMode NOTIFY stsRegOperationalModeChanged)
+	Q_PROPERTY(double StsRegSummary READ StsRegSummary WRITE setStsRegSummary NOTIFY stsRegSummaryChanged)
+	Q_PROPERTY(double StsRegOperationalFailure READ StsRegOperationalFailure WRITE setStsRegOperationalFailure NOTIFY stsRegOperationalFailureChanged)
+	Q_PROPERTY(double StsRegHardwareFailure READ StsRegHardwareFailure WRITE setStsRegHardwareFailure NOTIFY stsRegHardwareFailureChanged)
+	Q_PROPERTY(double StsRegWarning READ StsRegWarning WRITE setStsRegWarning NOTIFY stsRegWarningChanged)
+	Q_PROPERTY(double SOCAmpHrs READ SOCAmpHrs WRITE setSOCAmpHrs NOTIFY socAmpHrsChanged)
+	Q_PROPERTY(double AirTemp READ AirTemp WRITE setAirTemp NOTIFY airTempChanged)
+	Q_PROPERTY(double HealthIndication READ HealthIndication WRITE setHealthIndication NOTIFY healthIndicationChanged)
+	Q_PROPERTY(double BussVolts READ BussVolts WRITE setBussVolts NOTIFY bussVoltsChanged)
+	Q_PROPERTY(double State READ State WRITE setState NOTIFY stateChanged)
+	Q_PROPERTY(double DeviceAddress READ DeviceAddress WRITE setDeviceAddress NOTIFY deviceAddressChanged)
+	Q_PROPERTY(double ClearStatusRegisterFlags READ ClearStatusRegisterFlags WRITE setClearStatusRegisterFlags NOTIFY clearStatusRegisterFlagsChanged)
+	Q_PROPERTY(double RequestDelayedSelfMaintenance READ RequestDelayedSelfMaintenance WRITE setRequestDelayedSelfMaintenance NOTIFY requestDelayedSelfMaintenanceChanged)
+	Q_PROPERTY(double SetOperationalMode READ SetOperationalMode WRITE setSetOperationalMode NOTIFY setOperationalModeChanged)
+	Q_PROPERTY(double RequestImmediateSelfMaintenance READ RequestImmediateSelfMaintenance WRITE setRequestImmediateSelfMaintenance NOTIFY requestImmediateSelfMaintenanceChanged)
 
 signals:
 	void battAmpsChanged();
@@ -50,6 +65,11 @@ signals:
 	void socAmpHrsChanged();
 	void healthIndicationChanged();
 	void stateChanged();
+	void deviceAddressChanged();
+	void clearStatusRegisterFlagsChanged();
+	void requestDelayedSelfMaintenanceChanged();
+	void setOperationalModeChanged();
+	void requestImmediateSelfMaintenanceChanged();
 public:
 	BatteryController(const QString &portName, int slaveAddress, QObject *parent = 0);
 
@@ -130,6 +150,16 @@ public:
 	void setHealthIndication(int t);
 	int State() const;
 	void setState(int t);
+	int DeviceAddress() const;
+	void setDeviceAddress(int t);
+	int ClearStatusRegisterFlags() const;
+	void setClearStatusRegisterFlags(int t);
+	int RequestDelayedSelfMaintenance() const;
+	void setRequestDelayedSelfMaintenance(int t);
+	int SetOperationalMode() const;
+	void setSetOperationalMode(int t);
+	int RequestImmediateSelfMaintenance() const;
+	void setRequestImmediateSelfMaintenance(int t);
 
 	/*!
 	 * Returns the error code.
@@ -192,7 +222,7 @@ private:
 	int mState;
 	int mDeviceAddress;
 	int mClearStatusRegisterFlags;
-	int mRequestDelayedSelfMaintenane;
+	int mRequestDelayedSelfMaintenance;
 	int mSetOperationalMode;
 	int mRequestImmediateSelfMaintenance;
 };
