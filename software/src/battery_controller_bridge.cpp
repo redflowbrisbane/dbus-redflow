@@ -109,8 +109,10 @@ bool BatteryControllerBridge::fromDBus(const QString &path, QVariant &value)
 		if (name == mBatteryController->productName())
 			value = "";
 		return true;
-	} 
-	return false;
+	}
+	// Return value false means that changes from the D-Bus will not be passed
+	// to the QT properties.
+	return true;
 }
 
 
