@@ -194,7 +194,6 @@ void BatteryControllerUpdater::onWriteCompleted(int function, quint8 addr,
 	case SetMeasuringSystem:
 		Q_ASSERT(function == ModbusRtu::WriteSingleRegister);
 		Q_ASSERT(address == RegMeasurementSystem);
-		Q_ASSERT(value == mDesiredMeasuringSystem);
 		mState = Acquisition;
 		break;
 	case SetMeasurementMode:
