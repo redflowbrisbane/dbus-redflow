@@ -9,7 +9,27 @@ BatteryController::BatteryController(const QString &portName, int deviceAddress,
 	mErrorCode(0),
 	mFirmwareVersion(0),
 	mPortName(portName),
-	mSlaveAddress(slaveAddress)
+	mBattVolts(0),
+	mBussVolts(0),
+	mBattAmps(0),
+	mBussAmps(0),
+	mBattTemp(0),
+	mAirTemp(0),
+	mBattPower(0),
+	mSOC(0),
+	mStsRegSummary(0),
+	mStsRegHardwareFailure(0),
+	mStsRegOperationalFailure(0),
+	mStsRegWarning(0),
+	mStsRegOperationalMode(0),
+	mSOCAmpHrs(0),
+	mHealthIndication(0),
+	mState(0),
+	mDeviceAddress(deviceAddress),
+	mClearStatusRegisterFlags(0),
+	mRequestDelayedSelfMaintenance(0),
+	mSetOperationalMode(0),
+	mRequestImmediateSelfMaintenance(0)
 {
 	
 }
