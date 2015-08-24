@@ -19,6 +19,7 @@ class BatteryController : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(double BattAmps READ BattAmps WRITE setBattAmps NOTIFY battAmpsChanged)
+	Q_PROPERTY(double BussAmps READ BussAmps WRITE setBussAmps NOTIFY bussAmpsChanged)
 	Q_PROPERTY(int BattVolts READ BattVolts WRITE setBattVolts NOTIFY battVoltsChanged)
 	Q_PROPERTY(double BattTemp READ BattTemp WRITE setBattTemp NOTIFY battTempChanged)
 	Q_PROPERTY(int BattPower READ BattPower WRITE setBattPower NOTIFY battPowerChanged)
@@ -31,21 +32,21 @@ class BatteryController : public QObject
 	Q_PROPERTY(int firmwareVersion READ firmwareVersion WRITE setFirmwareVersion NOTIFY firmwareVersionChanged)
 	Q_PROPERTY(int errorCode READ errorCode WRITE setErrorCode NOTIFY errorCodeChanged)
 	Q_PROPERTY(QString portName READ portName)
-	Q_PROPERTY(double StsRegOperationalMode READ StsRegOperationalMode WRITE setStsRegOperationalMode NOTIFY stsRegOperationalModeChanged)
-	Q_PROPERTY(double StsRegSummary READ StsRegSummary WRITE setStsRegSummary NOTIFY stsRegSummaryChanged)
-	Q_PROPERTY(double StsRegOperationalFailure READ StsRegOperationalFailure WRITE setStsRegOperationalFailure NOTIFY stsRegOperationalFailureChanged)
-	Q_PROPERTY(double StsRegHardwareFailure READ StsRegHardwareFailure WRITE setStsRegHardwareFailure NOTIFY stsRegHardwareFailureChanged)
-	Q_PROPERTY(double StsRegWarning READ StsRegWarning WRITE setStsRegWarning NOTIFY stsRegWarningChanged)
-	Q_PROPERTY(double SOCAmpHrs READ SOCAmpHrs WRITE setSOCAmpHrs NOTIFY socAmpHrsChanged)
-	Q_PROPERTY(double AirTemp READ AirTemp WRITE setAirTemp NOTIFY airTempChanged)
-	Q_PROPERTY(double HealthIndication READ HealthIndication WRITE setHealthIndication NOTIFY healthIndicationChanged)
-	Q_PROPERTY(double BussVolts READ BussVolts WRITE setBussVolts NOTIFY bussVoltsChanged)
-	Q_PROPERTY(double State READ State WRITE setState NOTIFY stateChanged)
-	Q_PROPERTY(double DeviceAddress READ DeviceAddress WRITE setDeviceAddress NOTIFY deviceAddressChanged)
-	Q_PROPERTY(double ClearStatusRegisterFlags READ ClearStatusRegisterFlags WRITE setClearStatusRegisterFlags NOTIFY clearStatusRegisterFlagsChanged)
-	Q_PROPERTY(double RequestDelayedSelfMaintenance READ RequestDelayedSelfMaintenance WRITE setRequestDelayedSelfMaintenance NOTIFY requestDelayedSelfMaintenanceChanged)
-	Q_PROPERTY(double SetOperationalMode READ SetOperationalMode WRITE setSetOperationalMode NOTIFY setOperationalModeChanged)
-	Q_PROPERTY(double RequestImmediateSelfMaintenance READ RequestImmediateSelfMaintenance WRITE setRequestImmediateSelfMaintenance NOTIFY requestImmediateSelfMaintenanceChanged)
+	Q_PROPERTY(int StsRegOperationalMode READ StsRegOperationalMode WRITE setStsRegOperationalMode NOTIFY stsRegOperationalModeChanged)
+	Q_PROPERTY(int StsRegSummary READ StsRegSummary WRITE setStsRegSummary NOTIFY stsRegSummaryChanged)
+	Q_PROPERTY(int StsRegOperationalFailure READ StsRegOperationalFailure WRITE setStsRegOperationalFailure NOTIFY stsRegOperationalFailureChanged)
+	Q_PROPERTY(int StsRegHardwareFailure READ StsRegHardwareFailure WRITE setStsRegHardwareFailure NOTIFY stsRegHardwareFailureChanged)
+	Q_PROPERTY(int StsRegWarning READ StsRegWarning WRITE setStsRegWarning NOTIFY stsRegWarningChanged)
+	Q_PROPERTY(int SOCAmpHrs READ SOCAmpHrs WRITE setSOCAmpHrs NOTIFY socAmpHrsChanged)
+	Q_PROPERTY(int AirTemp READ AirTemp WRITE setAirTemp NOTIFY airTempChanged)
+	Q_PROPERTY(int HealthIndication READ HealthIndication WRITE setHealthIndication NOTIFY healthIndicationChanged)
+	Q_PROPERTY(int BussVolts READ BussVolts WRITE setBussVolts NOTIFY bussVoltsChanged)
+	Q_PROPERTY(int State READ State WRITE setState NOTIFY stateChanged)
+	Q_PROPERTY(int DeviceAddress READ DeviceAddress WRITE setDeviceAddress NOTIFY deviceAddressChanged)
+	Q_PROPERTY(int ClearStatusRegisterFlags READ ClearStatusRegisterFlags WRITE setClearStatusRegisterFlags NOTIFY clearStatusRegisterFlagsChanged)
+	Q_PROPERTY(int RequestDelayedSelfMaintenance READ RequestDelayedSelfMaintenance WRITE setRequestDelayedSelfMaintenance NOTIFY requestDelayedSelfMaintenanceChanged)
+	Q_PROPERTY(int SetOperationalMode READ SetOperationalMode WRITE setSetOperationalMode NOTIFY setOperationalModeChanged)
+	Q_PROPERTY(int RequestImmediateSelfMaintenance READ RequestImmediateSelfMaintenance WRITE setRequestImmediateSelfMaintenance NOTIFY requestImmediateSelfMaintenanceChanged)
 
 signals:
 	void battAmpsChanged();
@@ -71,7 +72,7 @@ signals:
 	void setOperationalModeChanged();
 	void requestImmediateSelfMaintenanceChanged();
 public:
-	BatteryController(const QString &portName, int slaveAddress, QObject *parent = 0);
+	BatteryController(const QString &portName, int deviceAddress, QObject *parent = 0);
 
 	ConnectionState connectionState() const;
 
@@ -180,8 +181,6 @@ public:
 	 */
 	QString portName() const;
 
-	int slaveAddress() const;
-
 signals:
 	void connectionStateChanged();
 
@@ -202,7 +201,6 @@ private:
 	int mErrorCode;
 	int mFirmwareVersion;
 	QString mPortName;
-	int mSlaveAddress;
 	QString mSerial;
 	int mBattVolts;
 	int mBussVolts;

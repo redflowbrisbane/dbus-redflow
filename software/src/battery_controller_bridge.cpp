@@ -10,8 +10,6 @@
 #include "settings.h"
 #include "version.h"
 
-#define VE_PROD_ID_REDFLOW_ZBM_2 0xB003
-
 
 BatteryControllerBridge::BatteryControllerBridge(BatteryController *BatteryController,
 							   BatteryControllerSettings *emSettings,
@@ -43,7 +41,7 @@ BatteryControllerBridge::BatteryControllerBridge(BatteryController *BatteryContr
 	produce("/Mgmt/ProcessVersion", VERSION);
 	produce("/FirmwareVersion", BatteryController->firmwareVersion());
 	produce("/ProductName", BatteryController->productName());
-	produce("/ProductId", VE_PROD_ID_REDFLOW_ZBM_2);
+	produce("/ProductId", VE_PROD_ID_REDFLOW_ZBM2);
 	produce("/DeviceType", BatteryController->deviceType());
 	QString portName = BatteryController->portName();
 	int deviceInstance = getDeviceInstance(portName, "/dev/ttyUSB", 288);
@@ -109,8 +107,10 @@ bool BatteryControllerBridge::fromDBus(const QString &path, QVariant &value)
 		if (name == mBatteryController->productName())
 			value = "";
 		return true;
-	} 
-	return false;
+	}
+	// Return value false means that changes from the D-Bus will not be passed
+	// to the QT properties.
+	return true;
 }
 
 
