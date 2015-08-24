@@ -71,7 +71,7 @@ signals:
 	void setOperationalModeChanged();
 	void requestImmediateSelfMaintenanceChanged();
 public:
-	BatteryController(const QString &portName, int slaveAddress, QObject *parent = 0);
+	BatteryController(const QString &portName, int deviceAddress, QObject *parent = 0);
 
 	ConnectionState connectionState() const;
 
@@ -180,8 +180,6 @@ public:
 	 */
 	QString portName() const;
 
-	int slaveAddress() const;
-
 signals:
 	void connectionStateChanged();
 
@@ -202,7 +200,6 @@ private:
 	int mErrorCode;
 	int mFirmwareVersion;
 	QString mPortName;
-	int mSlaveAddress;
 	QString mSerial;
 	int mBattVolts;
 	int mBussVolts;

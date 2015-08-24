@@ -1,7 +1,7 @@
 #include <QsLog.h>
 #include "batteryController.h"
 
-BatteryController::BatteryController(const QString &portName, int slaveAddress, QObject *parent) :
+BatteryController::BatteryController(const QString &portName, int deviceAddress, QObject *parent) :
 	QObject(parent),
 	mConnectionState(Disconnected),
 	mDeviceType(0),
@@ -74,11 +74,6 @@ void BatteryController::setErrorCode(int code)
 QString BatteryController::portName() const
 {
 	return mPortName;
-}
-
-int BatteryController::slaveAddress() const
-{
-	return mSlaveAddress;
 }
 
 QString BatteryController::serial() const

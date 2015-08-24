@@ -97,7 +97,7 @@ BatteryControllerSettings *BatteryControllerUpdater::settings()
 
 void BatteryControllerUpdater::onErrorReceived(int errorType, quint8 addr, int exception)
 {
-	if (addr != mBatteryController->slaveAddress())
+	if (addr != mBatteryController->DeviceAddress())
 		return;
 
 	if (errorType == ModbusRtu::Timeout) {
@@ -121,7 +121,7 @@ void BatteryControllerUpdater::onErrorReceived(int errorType, quint8 addr, int e
 void BatteryControllerUpdater::onReadCompleted(int function, quint8 addr,
 										 const QList<quint16> &registers)
 {
-	if (addr != mBatteryController->slaveAddress())
+	if (addr != mBatteryController->DeviceAddress())
 		return;
 	Q_UNUSED(function)
 	switch (mState) {
@@ -180,7 +180,7 @@ void BatteryControllerUpdater::onReadCompleted(int function, quint8 addr,
 void BatteryControllerUpdater::onWriteCompleted(int function, quint8 addr,
 										  quint16 address, quint16 value)
 {
-	if (addr != mBatteryController->slaveAddress())
+	if (addr != mBatteryController->DeviceAddress())
 		return;
 	Q_UNUSED(function)
 	Q_UNUSED(address)
@@ -342,13 +342,13 @@ void BatteryControllerUpdater::startNextAcquisition()
 void BatteryControllerUpdater::readRegisters(quint16 startReg, quint16 count)
 {
 	mModbus->readRegisters(ModbusRtu::ReadHoldingRegisters,
-						   mBatteryController->slaveAddress(), startReg, count);
+						   mBatteryController->DeviceAddress(), startReg, count);
 }
 
 void BatteryControllerUpdater::writeRegister(quint16 reg, quint16 value)
 {
 	mModbus->writeRegister(ModbusRtu::WriteSingleRegister,
-						   mBatteryController->slaveAddress(), reg, value);
+						   mBatteryController->DeviceAddress(), reg, value);
 }
 
 void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &registers)
