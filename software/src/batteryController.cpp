@@ -122,9 +122,9 @@ void BatteryController::setFirmwareVersion(int v)
 	emit firmwareVersionChanged();
 }
 
-int BatteryController::BattVolts() const
+double BatteryController::BattVolts() const
 {
-	return mBattVolts /10;
+	return (double) ((float)mBattVolts)/10;
 }
 
 void BatteryController::setBattVolts(int t)
@@ -360,9 +360,11 @@ int BatteryController::ClearStatusRegisterFlags() const
 
 void BatteryController::setClearStatusRegisterFlags(int t)
 {
+	QLOG_INFO() << "SETCLEARSTATUSREGISTERFLAGS " << t;
 	if (mClearStatusRegisterFlags == t)
 		return;
 	mClearStatusRegisterFlags = t;
+	
 	emit clearStatusRegisterFlagsChanged();	 
 }
 
@@ -391,7 +393,7 @@ QLOG_INFO() << "SETSET";
 	if (mSetOperationalMode == t)
 		return;
 	mSetOperationalMode = t;
-	emit setOperationalModeChanged();	 
+	//emit setOperationalModeChanged();	 
 }
 
 int BatteryController::RequestImmediateSelfMaintenance() const
@@ -406,4 +408,47 @@ QLOG_INFO() << "IMMEDIATE STRIP";
 		return;
 	mRequestImmediateSelfMaintenance = t;
 	emit requestImmediateSelfMaintenanceChanged();	 
+}
+
+int BatteryController::EnableSelfMaintenanceAtTheEndOfDischarge() const
+{
+	return mEnableSelfMaintenanceAtTheEndOfDischarge;
+}
+
+void BatteryController::setEnableSelfMaintenanceAtTheEndOfDischarge(int t)
+{
+	if (mEnableSelfMaintenanceAtTheEndOfDischarge == t)
+		return;
+	mEnableSelfMaintenanceAtTheEndOfDischarge = t;
+	emit enableSelfMaintenanceAtTheEndOfDischargeChanged();	 
+	//emit parameterChanged();
+}
+
+int BatteryController::EnterRunCommand() const
+{
+	return mEnterRunCommand;
+}
+
+void BatteryController::setEnterRunCommand(int t)
+{
+	if (mEnterRunCommand == t)
+		return;
+	mEnterRunCommand = t;
+	emit enterRunCommandChanged();	 
+	//emit parameterChanged();
+}
+
+
+int BatteryController::SelfDischargeAndMaintenanceCycle() const
+{
+	return mSelfDischargeAndMaintenanceCycle;
+}
+
+void BatteryController::setSelfDischargeAndMaintenanceCycle(int t)
+{
+	if (mSelfDischargeAndMaintenanceCycle == t)
+		return;
+	mSelfDischargeAndMaintenanceCycle = t;
+	emit selfDischargeAndMaintenanceCycleChanged();	 
+	//emit parameterChanged();
 }

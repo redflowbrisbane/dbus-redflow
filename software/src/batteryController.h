@@ -20,7 +20,7 @@ class BatteryController : public QObject
 	Q_OBJECT
 	Q_PROPERTY(double BattAmps READ BattAmps WRITE setBattAmps NOTIFY battAmpsChanged)
 	Q_PROPERTY(double BussAmps READ BussAmps WRITE setBussAmps NOTIFY bussAmpsChanged)
-	Q_PROPERTY(int BattVolts READ BattVolts WRITE setBattVolts NOTIFY battVoltsChanged)
+	Q_PROPERTY(double BattVolts READ BattVolts WRITE setBattVolts NOTIFY battVoltsChanged)
 	Q_PROPERTY(double BattTemp READ BattTemp WRITE setBattTemp NOTIFY battTempChanged)
 	Q_PROPERTY(int BattPower READ BattPower WRITE setBattPower NOTIFY battPowerChanged)
 	Q_PROPERTY(int SOC READ SOC WRITE setSOC NOTIFY socChanged);
@@ -47,7 +47,9 @@ class BatteryController : public QObject
 	Q_PROPERTY(int RequestDelayedSelfMaintenance READ RequestDelayedSelfMaintenance WRITE setRequestDelayedSelfMaintenance NOTIFY requestDelayedSelfMaintenanceChanged)
 	Q_PROPERTY(int SetOperationalMode READ SetOperationalMode WRITE setSetOperationalMode NOTIFY setOperationalModeChanged)
 	Q_PROPERTY(int RequestImmediateSelfMaintenance READ RequestImmediateSelfMaintenance WRITE setRequestImmediateSelfMaintenance NOTIFY requestImmediateSelfMaintenanceChanged)
-
+	Q_PROPERTY(int EnableSelfMaintenanceAtTheEndOfDischarge READ EnableSelfMaintenanceAtTheEndOfDischarge WRITE setEnableSelfMaintenanceAtTheEndOfDischarge NOTIFY enableSelfMaintenanceAtTheEndOfDischargeChanged)
+	Q_PROPERTY(int EnterRunCommand READ EnterRunCommand WRITE setEnterRunCommand NOTIFY enterRunCommandChanged)
+	Q_PROPERTY(int SelfDischargeAndMaintenanceCycle READ SelfDischargeAndMaintenanceCycle WRITE setSelfDischargeAndMaintenanceCycle NOTIFY selfDischargeAndMaintenanceCycleChanged)
 signals:
 	void battAmpsChanged();
 	void battVoltsChanged();
@@ -71,6 +73,9 @@ signals:
 	void requestDelayedSelfMaintenanceChanged();
 	void setOperationalModeChanged();
 	void requestImmediateSelfMaintenanceChanged();
+	void enableSelfMaintenanceAtTheEndOfDischargeChanged();
+	void enterRunCommandChanged();
+	void selfDischargeAndMaintenanceCycleChanged();
 public:
 	BatteryController(const QString &portName, int deviceAddress, QObject *parent = 0);
 
@@ -103,7 +108,7 @@ public:
 
 	void setFirmwareVersion(int v);
 
-	int BattVolts() const;
+	double BattVolts() const;
 
 	void setBattVolts(int t);
 
@@ -161,7 +166,12 @@ public:
 	void setSetOperationalMode(int t);
 	int RequestImmediateSelfMaintenance() const;
 	void setRequestImmediateSelfMaintenance(int t);
-
+	int EnableSelfMaintenanceAtTheEndOfDischarge() const;
+	void setEnableSelfMaintenanceAtTheEndOfDischarge(int t);
+	int EnterRunCommand() const;
+	void setEnterRunCommand(int t);
+	int SelfDischargeAndMaintenanceCycle() const;
+	void setSelfDischargeAndMaintenanceCycle(int t);
 	/*!
 	 * Returns the error code.
 	 * Possible values:
@@ -223,6 +233,9 @@ private:
 	int mRequestDelayedSelfMaintenance;
 	int mSetOperationalMode;
 	int mRequestImmediateSelfMaintenance;
+	int mEnableSelfMaintenanceAtTheEndOfDischarge;
+	int mEnterRunCommand;
+	int mSelfDischargeAndMaintenanceCycle;	
 };
 
 #endif // BATTERY_CONTROLLER_H

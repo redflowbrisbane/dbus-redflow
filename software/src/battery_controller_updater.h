@@ -50,7 +50,10 @@ public:
 	 * of the updater (and the energy meter itself).
 	 */
 	BatteryControllerSettings *settings();
+	void readRegisters(quint16 startReg, quint16 count);
 
+	void writeRegister(quint16 reg, quint16 value);
+	
 signals:
 	void infoChanged(BatteryController *);
 
@@ -64,15 +67,15 @@ private slots:
 	void onWaitFinished();
 
 	void onUpdateSettings();
+	void onRequestDelayedSelfMaintenanceChanged();
+	void onRequestImmediateSelfMaintenanceChanged();
+	void onClearStatusRegisterFlagsChanged();
+
 
 private:
 	void startNextAction();
 
 	void startNextAcquisition();
-
-	void readRegisters(quint16 startReg, quint16 count);
-
-	void writeRegister(quint16 reg, quint16 value);
 
 	void processAcquisitionData(const QList<quint16> &registers);
 

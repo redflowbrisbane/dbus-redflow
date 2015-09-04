@@ -9,6 +9,7 @@
 #include "battery_controller_updater.h"
 #include "settings.h"
 #include "version.h"
+#define VE_PROD_ID_REDFLOW_ZBM2 0xB003
 
 
 BatteryControllerBridge::BatteryControllerBridge(BatteryController *BatteryController,
@@ -62,11 +63,7 @@ bool BatteryControllerBridge::toDBus(const QString &path, QVariant &value)
 {
 	if (path == "/Connected") {
 		value = QVariant(value.value<ConnectionState>() == Connected ? 1 : 0);
-	} else if (path == "/CustomName") {
-		QString name = value.toString();
-		if (name.isEmpty())
-			value = mBatteryController->productName();
-	}
+	} 
 	if (value.type() == QVariant::Double && !std::isfinite(value.toDouble()))
 		value = QVariant();
 	return true;
@@ -76,8 +73,8 @@ bool BatteryControllerBridge::toDBus(const QString &path, QVariant &value)
 void BatteryControllerBridge::produceBatteryInfo(BatteryController *bc, const QString &path)
 {
 	produce(bc, "BattAmps", path + "/Dc/0/Current", "A", 1);
-	produce(bc, "BattVolts", path + "/Dc/0/Voltage", "V", 0);
-	produce(bc, "BattPower", path + "/Dc/0/Power", "W", 0);
+	produce(bc, "BattVolts", path + "/Dc/0/Voltage", "V", 1);
+	produce(bc, "BattPower", path + "/Dc/0/Power", "W", 1);
 	produce(bc, "BattTemp", path + "/Dc/0/Temperature", "C", 1);
 	produce(bc, "SOC", path + "/Soc", "%", 1);
 
@@ -102,12 +99,6 @@ void BatteryControllerBridge::produceBatteryInfo(BatteryController *bc, const QS
 
 bool BatteryControllerBridge::fromDBus(const QString &path, QVariant &value)
 {
-	if (path == "/CustomName") {
-		QString name = value.toString();
-		if (name == mBatteryController->productName())
-			value = "";
-		return true;
-	}
 	// Return value false means that changes from the D-Bus will not be passed
 	// to the QT properties.
 	return true;

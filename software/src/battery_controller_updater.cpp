@@ -7,6 +7,12 @@
 #include "battery_controller_bridge.h"
 #include "modbus_rtu.h"
 
+#define MODBUSREG_CLEAR_STATUS_REGISTER_FLAGS 					0x9031
+#define MODBUSREG_ENABLE_SELF_MAINTENANCE_END_OF_DISCHARGE 		0x9032
+#define MODBUSREG_SELF_DISCHARGE_AND_MAINTENANCE_CYCLE			0x9034
+
+
+
 static const int MaxAcquisitionIndex = 1;
 static const int MaxRegCount = 6;
 static const int MaxTimeoutCount = 5;
@@ -31,7 +37,12 @@ enum ParameterType {
 	NotUsed,
 	StsRegOperationalMode,
 	HealthIndication,
-	ZBMState
+	ZBMState,
+	DeviceAddress,
+	ClearStatusRegisterFlags,
+	EnableSelfMaintenanceAtTheEndOfDischarge,
+	EnterRunCommand,
+	SelfDischargeAndMaintenanceCycle
 };
 
 struct RegisterCommand {
@@ -49,7 +60,8 @@ static const CompositeCommand ZBMCommands[] = {
 	{ 0x9011, 0, { { 0, SOC }, { 1, SOC_AmpHrs }, { 2, BattVolts }, { 3, BattAmps }, { 4, BattTemp }, { 5, AirTemp } } },
 	{ 0x9001, 0, { { 0, StsRegSummary }, { 1, StsRegHardwareFailure }, { 2, StsRegOperationalFailure }, { 3, StsRegWarning }, { 4, NotUsed }, { 5, NotUsed } } },
 	{ 0x9008, 0, { { 0, StsRegOperationalMode }, { 1, NotUsed }, { 2, NotUsed }, { 3, NotUsed }, { 4, NotUsed }, { 5, NotUsed } } },
-	{ 0x9017, 0, { { 0, HealthIndication }, { 1, BussVolts }, { 2, ZBMState }, { 3, NotUsed }, { 4, NotUsed }, { 5, NotUsed } } }		
+	{ 0x9017, 0, { { 0, HealthIndication }, { 1, BussVolts }, { 2, ZBMState }, { 3, NotUsed }, { 4, NotUsed }, { 5, NotUsed } } } ,		
+	{ 0x9030, 0, { { 0, DeviceAddress }, { 1, ClearStatusRegisterFlags }, { 2, EnableSelfMaintenanceAtTheEndOfDischarge }, { 3, EnterRunCommand }, { 4, SelfDischargeAndMaintenanceCycle }, { 5, NotUsed } } }		
 };
 
 static const int ZBMCommandCount = sizeof(ZBMCommands) / sizeof(ZBMCommands[0]);
@@ -83,6 +95,17 @@ BatteryControllerUpdater::BatteryControllerUpdater(BatteryController *mBatteryCo
 			this, SLOT(onWaitFinished()));
 	connect(mSettingsUpdateTimer, SIGNAL(timeout()),
 			this, SLOT(onUpdateSettings()));
+
+	/*  signals from color control */
+
+	connect(mBatteryController, SIGNAL(clearStatusRegisterFlagsChanged()),
+		this, SLOT(onClearStatusRegisterFlagsChanged()));
+	connect(mBatteryController, SIGNAL(requestDelayedSelfMaintenanceChanged()),
+		this, SLOT(onRequestDelayedSelfMaintenanceChanged()));
+	connect(mBatteryController, SIGNAL(requestImmediateSelfMaintenaceChanged()),
+		this, SLOT(onRequestImmediateSelfMaintenanceChanged()));
+
+
 	mSettingsUpdateTimer->setInterval(UpdateSettingsInterval);
 	mSettingsUpdateTimer->start();
 	mAcquisitionTimer->setSingleShot(true);
@@ -393,19 +416,19 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				mBatteryController->setSOC(registers[ra.regOffset]);
 				break;	
 			case StsRegSummary:
-				QLOG_INFO() << "StsRegSummary: " << registers[ra.regOffset];
+				//QLOG_INFO() << "StsRegSummary: " << registers[ra.regOffset];
 				mBatteryController->setStsRegSummary(registers[ra.regOffset]);
 				break;	
 			case StsRegHardwareFailure:
-				QLOG_INFO() << "StsRegHardwareFailure: " << registers[ra.regOffset];
+				//QLOG_INFO() << "StsRegHardwareFailure: " << registers[ra.regOffset];
 				mBatteryController->setStsRegHardwareFailure(registers[ra.regOffset]);
 				break;
 			case StsRegOperationalFailure:
-				QLOG_INFO() << "StsRegOperationalFailure: " << registers[ra.regOffset];
+				//QLOG_INFO() << "StsRegOperationalFailure: " << registers[ra.regOffset];
 				mBatteryController->setStsRegOperationalFailure(registers[ra.regOffset]);
 				break;	
 			case StsRegWarning:
-				QLOG_INFO() << "StsRegWarning: " << registers[ra.regOffset];
+				//QLOG_INFO() << "StsRegWarning: " << registers[ra.regOffset];
 				mBatteryController->setStsRegWarning(registers[ra.regOffset]);
 				break;	
 			case StsRegOperationalMode:
@@ -417,13 +440,33 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 				mBatteryController->setSOCAmpHrs(static_cast<qint16>(registers[ra.regOffset]));
 				break;			
 			case HealthIndication:
-				QLOG_INFO() << "HealthIndication: " << registers[ra.regOffset];
+				//QLOG_INFO() << "HealthIndication: " << registers[ra.regOffset];
 				mBatteryController->setHealthIndication(registers[ra.regOffset]);
 				break;	
 			case ZBMState:
 				QLOG_INFO() << "ZBMState: " << registers[ra.regOffset];
 				mBatteryController->setState(registers[ra.regOffset]);
 				break;
+			case DeviceAddress:
+				QLOG_INFO() << "DeviceAddress: " << registers[ra.regOffset];
+				mBatteryController->setDeviceAddress(registers[ra.regOffset]);
+				break;
+			case ClearStatusRegisterFlags:
+				QLOG_INFO() << "ClearStatusRegisterFlags: " << registers[ra.regOffset];
+				mBatteryController->setClearStatusRegisterFlags(registers[ra.regOffset]);
+				break;
+			case EnableSelfMaintenanceAtTheEndOfDischarge:
+				QLOG_INFO() << "EnableSelfMaintenanceAtTheEndOfDischarge: " << registers[ra.regOffset];
+				mBatteryController->setEnableSelfMaintenanceAtTheEndOfDischarge(registers[ra.regOffset]);
+				break;
+			case EnterRunCommand:
+				QLOG_INFO() << "EnterRunCommand: " << registers[ra.regOffset];
+				mBatteryController->setEnterRunCommand(registers[ra.regOffset]);
+				break;		
+			case SelfDischargeAndMaintenanceCycle:
+				QLOG_INFO() << "SelfDischargeAndMaintenanceCycle: " << registers[ra.regOffset];
+				mBatteryController->setSelfDischargeAndMaintenanceCycle(registers[ra.regOffset]);
+				break;	
 			default:
 				break;
 			}
@@ -431,3 +474,25 @@ void BatteryControllerUpdater::processAcquisitionData(const QList<quint16> &regi
 	}
 }
 
+
+void BatteryControllerUpdater::onRequestDelayedSelfMaintenanceChanged()
+/* This function writes back the changes from the Victron color control to the ZBM registers */
+{
+	QLOG_INFO() <<"ONREQUESTDELAYEDSELFMAINTENANCECHANGED";
+	this->writeRegister(MODBUSREG_ENABLE_SELF_MAINTENANCE_END_OF_DISCHARGE,(quint16) mBatteryController->RequestDelayedSelfMaintenance());
+}
+
+
+void BatteryControllerUpdater::onRequestImmediateSelfMaintenanceChanged()
+/* This function writes back the changes from the Victron color control to the ZBM registers */
+{
+	QLOG_INFO() << "ONREQUESTIMMEDIATESELFMAINTENANCECHANGED";
+	this->writeRegister(MODBUSREG_SELF_DISCHARGE_AND_MAINTENANCE_CYCLE,(quint16) mBatteryController->RequestImmediateSelfMaintenance());
+}
+
+void BatteryControllerUpdater::onClearStatusRegisterFlagsChanged()
+/* This function writes back the changes from the Victron color control to the ZBM registers */
+{
+	QLOG_INFO() << "ONCLEARSTATUSREGISTERFLAGSCHANGED";
+	this->writeRegister(MODBUSREG_CLEAR_STATUS_REGISTER_FLAGS,(quint16) mBatteryController->ClearStatusRegisterFlags());
+}
